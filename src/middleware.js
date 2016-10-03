@@ -33,10 +33,20 @@ export default function uwaveWebClient(uw, options = {}) {
   const clientRouter = router();
 
   return clientRouter
+    .get('/', (req, res, next) => {
+      const rolesPromise = Promise.resolve(req.uwave && req.uwave.acl.getAllRoles());
+      rolesPromise.then((roles) => {
+        req.uwaveAclRoles = roles; // eslint-disable-line no-param-reassign
+        next();
+      }).catch(next);
+    })
     .get('/', (req, res) => {
       const transform = trumpet();
       injectTitle(transform, title);
-      injectConfig(transform, clientOptions);
+      injectConfig(transform, {
+        roles: req.uwaveAclRoles,
+        ...clientOptions
+      });
 
       fs.createReadStream(path.join(basePath, 'index.html'), 'utf8')
         .pipe(transform)

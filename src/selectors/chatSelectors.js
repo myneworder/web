@@ -10,7 +10,8 @@ import {
 } from './configSelectors';
 import {
   usersSelector,
-  currentUserSelector
+  currentUserSelector,
+  currentUserHasRoleSelector
 } from './userSelectors';
 import {
   notificationSettingsSelector
@@ -67,8 +68,8 @@ export const currentUserMuteSelector = createSelector(
 );
 
 export const availableGroupMentionsSelector = createSelector(
-  currentUserSelector,
-  user => getAvailableGroupMentions(user)
+  currentUserHasRoleSelector,
+  hasRole => getAvailableGroupMentions(mention => hasRole(`chat.mention.${mention}`))
 );
 
 export const emojiCompletionsSelector = createSelector(

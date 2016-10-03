@@ -1,18 +1,10 @@
 import cx from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
+import find from 'array-find';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import muiThemeable from 'material-ui/styles/muiThemeable';
-
-// TODO define role names server-side instead of role numbers
-const tempRoleIDToRoleName = {
-  0: 'default',
-  1: 'special',
-  2: 'moderator',
-  3: 'manager',
-  4: 'admin'
-};
 
 const Username = ({
   muiTheme,
@@ -20,7 +12,7 @@ const Username = ({
   user
 }) => {
   const rankColors = muiTheme.rankColors;
-  const roleName = tempRoleIDToRoleName[Math.min(user.role, 4)];
+  const roleName = find(user.roles, name => rankColors[name]) || 'default';
   let styles;
   if (rankColors[roleName]) {
     styles = { color: rankColors[roleName] };
