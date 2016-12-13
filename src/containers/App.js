@@ -16,7 +16,8 @@ import {
 import {
   isConnectedSelector
 } from '../selectors/serverSelectors';
-import App from '../components/App';
+import DesktopApp from '../components/App';
+import MobileApp from '../mobile/components/App';
 
 const mapStateToProps = createStructuredSelector({
   activeOverlay: state => state.activeOverlay,
@@ -81,6 +82,7 @@ class AppContainer extends React.Component {
   }
 
   render() {
+    const App = location.hash === '#mobile' ? MobileApp : DesktopApp;
     return (
       <MuiThemeProvider muiTheme={this.props.muiTheme}>
         <I18nextProvider i18n={this.props.locale}>

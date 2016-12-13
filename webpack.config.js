@@ -48,6 +48,7 @@ const plugins = [
   new HtmlPlugin({
     chunks: [ 'app' ],
     inject: false,
+    mobile: true,
     template: './index.html',
     minify: nodeEnv === 'production' ? htmlMinifierOptions : false,
     loadingScreen: () => require('./tasks/utils/renderLoadingScreen')()
