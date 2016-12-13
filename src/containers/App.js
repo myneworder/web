@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { I18nextProvider } from 'react-i18next';
+import Media from 'react-media';
 import { closeAll } from '../actions/OverlayActionCreators';
 import { createTimer, stopTimer } from '../actions/TickerActionCreators';
 
@@ -81,12 +82,21 @@ class AppContainer extends React.Component {
     this.props.stopTimer();
   }
 
+  renderApp = (isMobile) => {
+    if (isMobile) {
+      return <MobileApp {...this.props} />;
+    }
+
+    return <DesktopApp {...this.props} />;
+  }
+
   render() {
-    const App = location.hash === '#mobile' ? MobileApp : DesktopApp;
     return (
       <MuiThemeProvider muiTheme={this.props.muiTheme}>
         <I18nextProvider i18n={this.props.locale}>
-          <App {...this.props} />
+          <Media query="(max-width: 768px)">
+            {this.renderApp}
+          </Media>
         </I18nextProvider>
       </MuiThemeProvider>
     );
