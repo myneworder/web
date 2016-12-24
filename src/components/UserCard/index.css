@@ -1,4 +1,6 @@
-.UserCard {
+@import "./UserCard.css";
+
+.UserCardWrapper {
   position: absolute;
   transform: translateX(-100%);
 }

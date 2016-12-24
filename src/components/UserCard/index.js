@@ -61,7 +61,9 @@ class UserCardWrapper extends React.Component {
             }}
             ref={this.refContainer}
           >
-            <UserCard {...props} />
+            <div className="UserCardWrapper">
+              <UserCard {...props} />
+            </div>
           </div>
         )}
       />
