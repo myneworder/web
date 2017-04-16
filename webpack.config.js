@@ -6,6 +6,7 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const ExtractManifestPlugin = require('./tasks/utils/ExtractManifestPlugin');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 
@@ -65,6 +66,10 @@ const plugins = [
   new ProgressPlugin(),
   new LodashModuleReplacementPlugin({
     paths: true
+  }),
+  new ExtractManifestPlugin({
+    chunkName: 'manifest',
+    minimize: nodeEnv === 'production'
   })
 ];
 
@@ -83,6 +88,8 @@ if (nodeEnv === 'production') {
     }),
     new CommonShakePlugin(),
     new UglifyJsPlugin({
+      // No need to minify this since it won't be emitted anyway.
+      exclude: /manifest/,
       sourceMap: true,
       uglifyOptions: {
         toplevel: true,
@@ -98,6 +105,7 @@ if (nodeEnv === 'production') {
 
 const context = path.join(__dirname, 'src');
 const entries = {
+  manifest: './manifest.js',
   app: [ './app.js', './app.css' ],
   passwordReset: [ './password-reset/app.js' ]
 };
@@ -139,27 +147,6 @@ Object.keys(staticPages).forEach((name) => {
       template: './markdown.dev.html',
       filename: `${name}.html`
     }));
-  }
-});
-
-plugins.push({
-  apply(compiler) {
-    const manifestModule = require.resolve('./src/manifest');
-    const manifest = require('./src/manifest').default;
-
-    compiler.plugin('emit', (compilation, cb) => {
-      const json = JSON.stringify(manifest, null, 2);
-      // eslint-disable-next-line no-param-reassign
-      compilation.assets['manifest.json'] = {
-        source: () => json,
-        size: () => json.length
-      };
-      cb();
-    });
-    compiler.plugin('after-emit', (compilation, cb) => {
-      compilation.fileDependencies.push(manifestModule);
-      cb();
-    });
   }
 });
 
