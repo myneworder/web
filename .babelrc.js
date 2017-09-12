@@ -5,9 +5,6 @@ const targets = {};
 if (browsers) {
   targets.browsers = browsers;
 }
-if (env === 'production') {
-  targets.uglify = true;
-}
 if (env === 'testing') {
   targets.node = 'current';
 }
@@ -17,6 +14,7 @@ const preset = {
     ['env', {
       modules: false,
       loose: env === 'production',
+      forceAllTransforms: env === 'production',
       targets,
       // Force enable the classes transform, react-hot-loader doesn't
       // appear to work well with native classes + arrow functions in

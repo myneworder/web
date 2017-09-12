@@ -2,7 +2,7 @@ const enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
 const chai = require('chai');
 
-require('babel-register')({
+require('babel-register').default({
   plugins: [
     'transform-es2015-modules-commonjs',
     'dynamic-import-node'
