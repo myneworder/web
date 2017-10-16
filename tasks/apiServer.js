@@ -21,10 +21,12 @@ function tryRequire(file, message) {
 
 function loadDevModules() {
   require('babel-register').default();
-  const uwave = tryRequire('u-wave-core/src/index.js',
+  const uwave = tryRequire(
+    'u-wave-core/src/index.js',
     'Could not find the u-wave core module. Did you run `npm install u-wave-core`?'
   );
-  const createWebApi = tryRequire('u-wave-api-v1/src/index.js',
+  const createWebApi = tryRequire(
+    'u-wave-api-v1/src/index.js',
     'Could not find the u-wave API module. Did you run `npm install u-wave-api-v1`?'
   );
 
