@@ -11,7 +11,7 @@ if (env === 'testing') {
 
 const preset = {
   presets: [
-    ['env', {
+    ['@babel/env', {
       modules: false,
       loose: env === 'production',
       forceAllTransforms: env === 'production',
@@ -19,14 +19,13 @@ const preset = {
       // Force enable the classes transform, react-hot-loader doesn't
       // appear to work well with native classes + arrow functions in
       // transpiled class properties.
-      include: env === 'development' ? ['transform-es2015-classes'] : []
+      include: env === 'development' ? ['@babel/transform-classes'] : []
     }],
-    'stage-2',
-    'react'
+    '@babel/stage-2',
+    '@babel/react'
   ],
   plugins: [
-    'transform-export-extensions',
-    ['transform-runtime', { polyfill: false }]
+    ['@babel/transform-runtime', { polyfill: false }]
   ]
 };
 
@@ -36,8 +35,8 @@ if (env === 'development') {
 
 if (env === 'production') {
   preset.plugins.push(
-    'transform-react-constant-elements',
-    'transform-react-inline-elements',
+    '@babel/transform-react-constant-elements',
+    '@babel/transform-react-inline-elements',
     ['transform-react-remove-prop-types', { mode: 'wrap' }]
   );
 }
