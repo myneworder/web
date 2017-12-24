@@ -19,7 +19,7 @@ const preset = {
       // Force enable the classes transform, react-hot-loader doesn't
       // appear to work well with native classes + arrow functions in
       // transpiled class properties.
-      include: env === 'development' ? ['@babel/transform-classes'] : []
+      include: env === 'development' ? ['transform-classes'] : []
     }],
     '@babel/stage-2',
     '@babel/react'
@@ -42,7 +42,15 @@ if (env === 'production') {
 }
 
 if (env === 'testing') {
-  preset.plugins.push('istanbul');
+  preset.plugins.push(
+    '@babel/proposal-export-default-from',
+    '@babel/proposal-export-namespace-from'
+  );
+} else {
+  preset.plugins.push(
+    '@babel/syntax-export-default-from',
+    '@babel/syntax-export-namespace-from'
+  );
 }
 
 module.exports = preset;
